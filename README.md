@@ -1,10 +1,10 @@
-# lme4GS: lme4 for Genomic Selection
+## lme4GS: lme4 for Genomic Selection
 
 Fits several models used routinely in Genomic Selection.
 
 #### Installation 
 
-**From GitHub (development version, unstable) **.
+**From GitHub (development version, added features)**.
 
 ```R
 #Install devtools package
