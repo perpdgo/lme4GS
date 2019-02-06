@@ -4,7 +4,7 @@ Fits several models used routinely in Genomic Selection.
 
 #### Installation 
 
-**From GitHub (development version, added features)**.
+**From GitHub (development version, unstable)**.
 
 ```R
 #Install devtools package
