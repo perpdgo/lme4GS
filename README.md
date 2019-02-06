@@ -8,7 +8,7 @@ Fits several models used routinely in Genomic Selection.
 
 ```R
 #Install devtools package
-install.packages(pkg='devtools',prepos='https://cran.r-project.org')
+install.packages(pkg='devtools',repos='https://cran.r-project.org')
 
 #Load the devtools library
 library(devtools)
