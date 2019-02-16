@@ -89,7 +89,7 @@ plot(y,predict(out))
 **Wheat examples**
 
 ```R
-library(BGLR)
+  library(BGLR)
   library(lme4GS)
 
   #Example 1, wheat 
