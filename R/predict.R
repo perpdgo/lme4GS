@@ -35,7 +35,7 @@ predict_uvcov<-function(object,newrandom)
 		names(uStar_trn)<-rownames(out_ranef)
 		
 		#The BLUPs are obtained when multiplying ZStar= Z*relfac(K) by uStar_trn
-		#u=ZStar*relfac(K)*uStar_trn. Note that ZStar is given in Ztlist
+		#u=Z*relfac(K)*uStar_trn. Note that ZStar is given in Ztlist
 		
 		#In which position in Ztlist the Zt that we need
 		j<-which(attr(object@frame,"fnmns")==label)
@@ -120,7 +120,7 @@ ranef_uvcov<-function(object)
                 names(uStar_trn)<-rownames(out_ranef)
 
                 #The BLUPs are obtained when multiplying ZStar= Z*relfac(K) by uStar_trn
-                #u=ZStar*relfac(K)*uStar_trn. Note that ZStar is given in Ztlist
+                #u=Z*relfac(K)*uStar_trn. Note that ZStar is given in Ztlist
 
                 #In which position in Ztlist the Zt that we need
                 j<-which(attr(object@frame,"fnmns")==labels[k])

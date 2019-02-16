@@ -8,6 +8,18 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 	#Check inputs
 	if(class(random)!="list") stop("random should be a list\n")
 	if(is.null(names(random)) | any(nchar(names(random))==0)) stop("Each element of the list 'random' must be named\n")
+
+	#Check the factoring method and assign 'auto' if it was not assigned
+	for(k in 1:length(random))
+	{
+		if(is.null(random[[k]]$f_method))
+		{
+			random[[k]]$f_method<-"auto"
+			message("Factoring method for vcov matrix set to 'auto' for ",names(random)[k])
+		}else{
+			if(!(random[[k]]$f_method%in%c("auto","chol","evd"))) stop("Supported factoring methods are: 'auto', 'chol' or 'evd'.\n")
+		}
+	}
 	
 	#Step 1 parse the formula
 	control<-lmerControl()
@@ -29,13 +41,13 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 	
 	for(k in 1:length(random))
 	{
-		#If K is NULL then we assign the Identity matrix
+	    #If K is NULL then we assign the Identity matrix
 	    if(!is.null(random[[k]]$K))
 	    {
-			random[[k]]$id=as.factor(random[[k]]$id)
-			ids.unique=levels(random[[k]]$id)
-			random[[k]]$K=Matrix::Matrix(random[[k]]$K[ids.unique,ids.unique],sparse=TRUE)
-		}
+			random[[k]]$id<-as.factor(random[[k]]$id)
+			ids.unique<-levels(random[[k]]$id)
+			random[[k]]$K<-Matrix::Matrix(random[[k]]$K[ids.unique,ids.unique],sparse=TRUE)
+	    }
 	}
 	
 	#SOME THING VERY STRANGE HERE, IT IS POSSIBLE THAT THE ORDER OF ELEMENTS IN Ztlist 
@@ -55,7 +67,8 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 		#If K is NULL then we assign the Identity matrix
 		if(!is.null(random[[j]]$K))
 		{
-			Ztlist[[k]]<-relfac(random[[j]]$K)%*%Ztlist[[k]]
+			Ztlist[[k]]<-relfac(random[[j]]$K,random[[j]]$f_method,1e-10)%*%Ztlist[[k]]
+			#Ztlist[[k]]<-relfac(random[[j]]$K)%*%Ztlist[[k]]
 		}
 	}
 	
@@ -63,7 +76,7 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 	parsedFormula$reTrms[["Zt"]]<-do.call(rbind, Ztlist)  
 	
 	devianceFunction<-do.call(mkLmerDevfun, c(parsedFormula,
-    					      list(start = NULL, verbose = TRUE, control = control)))
+    					          list(start = NULL, verbose = TRUE, control = control)))
 	
 	#3 The optimization module
 	optimizerOutput<-optimizeLmer(devianceFunction,verbose=verbose)
