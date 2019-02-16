@@ -90,85 +90,89 @@ plot(y,predict(out))
 
 ```R
 library(BGLR)
-library(lme4GS)
+  library(lme4GS)
 
-#Example 1, wheat 
-data(wheat)
-X<-wheat.X
-Z<-scale(X,center=TRUE,scale=TRUE)
-G<-tcrossprod(Z)/ncol(Z)
-A<-wheat.A
-rownames(G)<-colnames(G)<-rownames(A)
-y<-wheat.Y[,1]
+  #Example 1, wheat 
+  data(wheat)
+  X<-wheat.X
+  Z<-scale(X,center=TRUE,scale=TRUE)
+  G<-tcrossprod(Z)/ncol(Z)
+  A<-wheat.A
+  rownames(G)<-colnames(G)<-rownames(A)
+  y<-wheat.Y[,1]
 
-#Predict 10/100 of records selected at random. 
-#The data were partitioned in 10 groups at random
-#and we predict individuals in group 2.
+  #Predict 10/100 of records selected at random. 
+  #The data were partitioned in 10 groups at random
+  #and we predict individuals in group 2.
 
-fold<-2
-ytrn<-y[wheat.sets!=fold]
-ytst<-y[wheat.sets==fold]
+  fold<-2
+  y_trn<-y[wheat.sets!=fold]
+  y_tst<-y[wheat.sets==fold]
 
-#######################################################################################
-#Marker based prediction
-#######################################################################################
+  #######################################################################################
+  #Marker based prediction
+  #######################################################################################
 
-random<-list(mrk=list(K=G,id=names(ytrn)))
+  random<-list(mrk=list(K=G,id=names(y_trn)))
 	
-out<-lmer_uvcov(ytrn,fixed="1",random=random)
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-plot(ytrn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-#Random effect list for prediction
-newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]))
+  #Random effect list for prediction
+  newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]))
 
-blup_tst<-predict_uvcov(out,newrandom)
-blup_tst<-blup_tst[[1]]
-points(ytst,blup_tst,col="red",pch=19)
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$mrk
+  yHat_tst<-fixef(out)[1]+blup_tst
+  points(y_tst,blup_tst,col="red",pch=19)
 
-#Correlation in testing set
-cor(ytst,blup_tst)
+  #Correlation in testing set
+  cor(y_tst,yHat_tst)
 
-#######################################################################################
-#Pedigree based prediction
-#######################################################################################
+  #######################################################################################
+  #Pedigree based prediction
+  #######################################################################################
 
-random<-list(ped=list(K=A,id=names(ytrn)))
+  random<-list(ped=list(K=A,id=names(y_trn)))
 	
-out<-lmer_uvcov(ytrn,fixed="1",random=random)
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-plot(ytrn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-#Random effect list for prediction
-newrandom<-list(ped=list(K=A,id=names(y)[wheat.sets==fold]))
+  #Random effect list for prediction
+  newrandom<-list(ped=list(K=A,id=names(y)[wheat.sets==fold]))
 
-blup_tst<-predict_uvcov(out,newrandom)
-blup_tst<-blup_tst[[1]]
-points(ytst,blup_tst,col="red",pch=19)
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$ped
+  yHat_tst<-fixef(out)[1]+blup_tst
+  points(y_tst,yHat_tst,col="red",pch=19)
 
-#Correlation in testing set
-cor(ytst,blup_tst)
+  #Correlation in testing set
+  cor(y_tst,yHat_tst)
 
-#######################################################################################
-#Markers + Pedigree based prediction
-#######################################################################################
+
+  #######################################################################################
+  #Markers + Pedigree based prediction
+  #######################################################################################
  
-random<-list(mrk=list(K=G,id=names(ytrn)),
-             ped=list(K=A,id=names(ytrn)))
+  random<-list(mrk=list(K=G,id=names(y_trn)),
+               ped=list(K=A,id=names(y_trn)))
 	
-out<-lmer_uvcov(ytrn,fixed="1",random=random)
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-plot(ytrn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-#Random effect list for prediction
-newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]),
-                ped=list(K=A,id=names(y)[wheat.sets==fold]))
+  #Random effect list for prediction
+  newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]),
+                  ped=list(K=A,id=names(y)[wheat.sets==fold]))
 
-blup_tst<-predict_uvcov(out,newrandom)
-blup_tst<-blup_tst[[1]]+blup_tst[[2]]
-points(ytst,blup_tst,col="red",pch=19)
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$mrk+blup_tst$ped
+  yHat_tst<-fixef(out)[1]+blup_tst
+  points(y_tst,blup_tst,col="red",pch=19)
 
-#Correlation in testing set
-cor(ytst,blup_tst)
+  #Correlation in testing set
+  cor(y_tst,yHat_tst)
 
 ```
