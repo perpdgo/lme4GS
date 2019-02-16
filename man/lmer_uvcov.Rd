@@ -22,24 +22,29 @@
 
 The routine fits the linear mixed model:
 
-\ifelse{html}{\figure{lmm.png}}{{\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1 \boldsymbol u_1 + \dots + \boldsymbol Z_q \boldsymbol u_q + \boldsymbol e}}}
+\ifelse{html}{\out{y=X&beta; + Z<sub>1</sub> u<sub>1</sub> + ... + Z<sub>q</sub> u<sub>q</sub> + e,}}{\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1 \boldsymbol u_1 + \dots + \boldsymbol Z_q \boldsymbol u_q + \boldsymbol e,}{y=X beta + Z[1] u[1] +...+ Z[q] u[q] + e,}}
 
-where \eqn{\boldsymbol y} is the response vector, \eqn{\boldsymbol X} is the matrix for
-fixed effects,  \eqn{\boldsymbol\beta} is the vector of fixed effects, 
-\eqn{\boldsymbol Z_j} is a design matrix for random effects, \eqn{\boldsymbol u_j} is
-a vector of random effects, \eqn{j=1,\dots,q}. We assume that 
-\eqn{\boldsymbol u_j \sim N(\boldsymbol 0, \sigma^2_j \boldsymbol K_j)}, 
-\eqn{j=1,\dots,q} and \eqn{\boldsymbol e \sim N(\boldsymbol 0, \sigma^2_e \boldsymbol I)}.
+where \eqn{\boldsymbol y}{y} is the response vector, \eqn{\boldsymbol X}{X} is the matrix for
+fixed effects,  \ifelse{html}{\out{&beta;}}{\eqn{\boldsymbol\beta}{beta}} is the vector of fixed effects, 
+\ifelse{html}{\out{Z<sub>j</sub>}}{\eqn{\boldsymbol Z_j}{Z[j]}} is a design matrix for random effects, 
+\ifelse{html}{\out{u<sub>j</sub>}}{\eqn{\boldsymbol u_j}{u[j]}} is a vector of random effects, 
+\eqn{j=1,\dots,q}{j=1,...,q}. We assume that 
+\ifelse{html}{\out{u<sub>j</sub>&#126;N(0,&sigma;<sup>2</sup><sub>j</sub> K <sub>j</sub>)}}{\eqn{\boldsymbol u_j \sim N(\boldsymbol 0, \sigma^2_j \boldsymbol K_j)}{u_j ~ N(0, sigma[j]^2] K[j])}},
+\eqn{j=1,\dots,q}{j=1,...,q} and 
+\ifelse{html}{\out{e&#126;N(0,&sigma;<sup>2</sup><sub>e</sub>I)}}{\eqn{\boldsymbol e \sim N(\boldsymbol 0, \sigma^2_e \boldsymbol I)}{e ~ N(0, sigma[e]^2 I)}}.
 
-The liner mixed model can be re-written as:
+The linear mixed model can be re-written as:
 
-\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1^* \boldsymbol u_1^* + \dots + \boldsymbol Z_q^* \boldsymbol u_q^* + \boldsymbol e}
+\ifelse{html}{\out{y=y=X&beta; + Z<sub>1</sub><sup>&ast;</sup> u<sub>1</sub><sup>&ast;</sup>+...+Z<sub>q</sub><sup>&ast;</sup> u<sub>q</sub><sup>&ast;</sup>+e,}}{\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1^* \boldsymbol u_1^* + \dots + \boldsymbol Z_q^* \boldsymbol u_q^* + \boldsymbol e,}{y= Xbeta + Z[1]^* u[1]^* + ... + Z[q]^* u[q]^* +e,}}
 
-where \eqn{\boldsymbol Z_j^*= \boldsymbol Z_j \times \boldsymbol L_j}, with \eqn{\boldsymbol L_j} from Cholesky 
-factorization for \eqn{\boldsymbol K_j}. Alternatively, 
-\eqn{\boldsymbol Z_j^*= \boldsymbol Z_j \times \boldsymbol \Gamma_j \boldsymbol \Lambda_j^{1/2}}, with 
-\eqn{\boldsymbol \Gamma_j} and \eqn{\boldsymbol \Lambda_j} the matrix of eigen-vectors and 
-eigen-values obtained from the eigen-value decomposition for \eqn{\boldsymbol K_j}.
+where \ifelse{html}{\out{Z<sub>j</sub><sup>&ast;</sup>=Z<sub>j</sub> L<sub>j</sub>}}{\eqn{\boldsymbol Z_j^*= \boldsymbol Z_j \times \boldsymbol L_j}{Z[j]^* = Z[j] L[j]}}, with \ifelse{html}{\out{L<sub>j</sub>}}{\eqn{\boldsymbol L_j}{L[j]}} from Cholesky 
+factorization for \ifelse{html}{\out{K<sub>j</sub>}}{\eqn{\boldsymbol K_j}{K[j]}}. Alternatively,
+\ifelse{html}{\out{Z<sub>j</sub><sup>&ast;</sup>=Z<sub>j</sub>&Gamma;<sub>j</sub>&Lambda;<sup>1/2</sup>}}{\eqn{\boldsymbol Z_j^*= \boldsymbol Z_j \times \boldsymbol \Gamma_j \boldsymbol \Lambda_j^{1/2}}{Z[j]^*=Z[j] Gamma[j] Lambda[j]^(1/2)}}, with 
+\ifelse{html}{\out{&Gamma;<sub>j</sub>}}{\eqn{\boldsymbol \Gamma_j}{Gamma[j]}} and 
+\ifelse{html}{\out{&Lambda;<sub>j</sub>}}{\eqn{\boldsymbol \Lambda_j}{Lambda[j]}} the matrix of 
+eigen-vectors and eigen-values obtained from the eigen-value decomposition 
+for \ifelse{html}{\out{K<sub>j</sub>}}{\eqn{\boldsymbol K_j}{K[j]}}. The factorization method for
+\ifelse{html}{\out{K<sub>j</sub>}}{\eqn{\boldsymbol K_j}{K[j]}} is selected automatically at runtime. 
 
 }
 
