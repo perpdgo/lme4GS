@@ -94,7 +94,7 @@ predict_uvcov<-function(object,newrandom)
 	
 	
 		#FIXME: check that the manes of the output object are in the same order than id
-	
+		u_tst<-u_tst[match(tst,names(u_tst))]
 		blup[[k]]<-u_tst
 		
 	}
