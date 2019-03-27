@@ -68,6 +68,11 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 		if(!is.null(random[[j]]$K))
 		{
 			Ztlist[[k]]<-relfac(random[[j]]$K,random[[j]]$f_method,1e-10)%*%Ztlist[[k]]
+			
+			#CHECK HERE, confirm if the names of columns are assigned correctly when 
+			#factors are present
+			colnames(Ztlist[[k]])<-random[[j]]$id
+			
 			#Ztlist[[k]]<-relfac(random[[j]]$K)%*%Ztlist[[k]]
 		}
 	}
