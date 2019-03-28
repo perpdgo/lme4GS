@@ -43,6 +43,9 @@ predict_uvcov<-function(object,newrandom)
 		#Extract Z
 		Z<-t(Ztlist[[j]])
 		
+		#Assign correct names to the rows of Z
+        rownames(Z)<-object@frame[,which(colnames(object@frame)==label)]
+		
 		if(any(colnames(Z)!=names(uStar_trn))) stop("Ordering problem\n")
 		u_trn<-as.vector(Z%*%uStar_trn)
 		names(u_trn)<-rownames(Z)
@@ -104,7 +107,7 @@ predict_uvcov<-function(object,newrandom)
 
 ranef_uvcov<-function(object)
 {
-	 blup<-list()
+	     blup<-list()
 
          Ztlist<-getME(object,"Ztlist")
 
@@ -127,6 +130,9 @@ ranef_uvcov<-function(object)
 
                 #Extract Z
                 Z<-t(Ztlist[[j]])
+                
+                #Assign correct names to the rows of Z
+                rownames(Z)<-object@frame[,which(colnames(object@frame)==labels[k])]
 
                 if(any(colnames(Z)!=names(uStar_trn))) stop("Ordering problem\n")
                 u_trn<-as.vector(Z%*%uStar_trn)
@@ -135,8 +141,9 @@ ranef_uvcov<-function(object)
                 #Remove duplicated
                 index<-duplicated(names(u_trn))
                 u_trn<-u_trn[!index]
-		blup[[j]]<-u_trn
+				blup[[k]]<-u_trn
 	}
+	
 	#Add the names
 	names(blup)<-attr(object@frame,"rnmns")
 
