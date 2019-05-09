@@ -1,6 +1,7 @@
 export(lmer_uvcov)
 export(predict_uvcov)
 export(ranef_uvcov)
+export(theta_optim)
 
 import(lme4)
 import(Matrix)
