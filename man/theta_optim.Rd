@@ -17,11 +17,11 @@
 }
 
 \value{A list that contains
-   \item{theta}{A vector that specifies the different values of \theta.}
-   \item{theta.max}{The optimal value of \theta that maximizes the log-likelihood.}
-   \item{LL}{A vector that specifies the values of the likelihood with its corresponding values of \theta.}
+   \item{theta}{A vector that specifies the different values of theta.}
+   \item{theta.max}{The optimal value of theta that maximizes the log-likelihood.}
+   \item{LL}{A vector that specifies the values of the likelihood with its corresponding values of theta.}
    \item{max.LL}{The maximum value of the log-likelihood.}
-   \item{K}{Tha Gassuian Kernel compute with the optimal value of \theta.}  
+   \item{K}{Tha Gassuian Kernel compute with the optimal value of theta.}  
 }
 
 
