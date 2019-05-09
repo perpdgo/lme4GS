@@ -13,7 +13,7 @@
 
 \arguments{
    \item{y}{(numeric, \eqn{n}{n}) the data-vector (NAs not allowed).}
-   \item{X}{A matrix, \eqn{n}{p} that specifies the markers.}
+   \item{X}{A matrix, \eqn{n}{n} \eqn{p}{p} that specifies the markers.}
 }
 
 \value{A list that contains
