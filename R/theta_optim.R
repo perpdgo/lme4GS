@@ -31,7 +31,7 @@ theta_optim<-function(y,X)
   {
     cat("i=",i,"\n")
     KG <- exp(-theta[i]*(D^2))	
-    random <- list(kernel=list(K=KG, id=ids))
+    random <- list(kernel=list(K=KG, id=rownames(X)))
     sol[[i]] <- lmer_uvcov(y=y,fixed="1",random=random) 
   }
   
