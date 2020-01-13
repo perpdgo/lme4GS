@@ -27,47 +27,14 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 	control$checkControl$check.nobs.vs.nlev <- "ignore"
 	control$checkControl$check.nobs.vs.nRE <- "ignore"
 	
-	#Get the random effects' names and extract their Id 
-	list_tmp = list()
-	for (name in names(random)) {
-		list_tmp[[name]] = random[[name]][["id"]]
-	}
-	
-	for (name in names(fixed)) {
-	  list_tmp[[name]] = fixed[[name]]
-	}
-
-	#Create the dataframe to be passed into lFormula
-	#Avoid transforming random effects Ids to factors.
-	data_df = data.frame(matrix(unlist(list_tmp), nrow = max(lengths(list_tmp))), stringsAsFactors = FALSE)
-
-	colnames(data_df) <- c(names(random), names(fixed))
-	#Keep variable y as numeric
-
-	data_df$y = y
-	#rownames(random_df) <- colnames(random[[1]][["K"]])
-
-	#Create formula
-	f <-"y~1"
-	
-	for(k in names(fixed)){
-	  if(k != "y"){
-	    f<-paste0(f,"+", k ,"")
-	  }
-	}
-
-	#Add random effects' names to the formula. With the previous modification it is not necessary to use the dataframe name in
-	#the formula
-	for(k in names(random)){
-	    if(k != "y"){
-			f<-paste0(f,"+ (1|", k ,")")
-		}
-	}
-	cat(f)
-	
-	#We must use the data parameter and adjust the f formula (as we did previously) in order to avoid issues as explained here
-	#https://rdrr.io/cran/lme4/man/modular.html
-	
+	f<-"y~"
+  	f<-paste0(f,fixed)
+  
+  	for(k in 1:length(random))
+  	{
+    	   f<-paste0(f,"+ (1|random[[",k,"]]$id)")
+  	}
+  
 	parsedFormula<-lFormula(f,control=control)
 	
 	#Step 2, deviance function
@@ -90,8 +57,8 @@ lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 	fnmns<-names(parsedFormula$reTrms[["flist"]])
 	
 	#The names as I was expecting
-	#expected_names<-paste0("random[[",1:length(random),"]]$id")
-	expected_names <- names(random)
+	expected_names<-paste0("random[[",1:length(random),"]]$id")
+	#expected_names <- names(random)
 	
 	for(k in 1:length(random))
 	{
