@@ -2,7 +2,7 @@
 #y=X*beta + Z_1 u_1 + Z_2 u_2 + ... + Z_k u_k + e 
 #NA are not allowed in y
 
-lmer_uvcov<-function(y,fixed,random,verbose=5L)
+lmer_uvcov<-function(y,fixed="1",random,verbose=5L)
 {
 	
 	#Check inputs
@@ -32,29 +32,20 @@ lmer_uvcov<-function(y,fixed,random,verbose=5L)
 	for (name in names(random)) {
 		list_tmp[[name]] = random[[name]][["id"]]
 	}
-	
-	for (name in names(fixed)) {
-	  list_tmp[[name]] = fixed[[name]]
-	}
 
 	#Create the dataframe to be passed into lFormula
 	#Avoid transforming random effects Ids to factors.
 	data_df = data.frame(matrix(unlist(list_tmp), nrow = max(lengths(list_tmp))), stringsAsFactors = FALSE)
 
-	colnames(data_df) <- c(names(random), names(fixed))
+	colnames(data_df) <- names(random)
 	#Keep variable y as numeric
 
 	data_df$y = y
 	#rownames(random_df) <- colnames(random[[1]][["K"]])
 
 	#Create formula
-	f <-"y~1"
-	
-	for(k in names(fixed)){
-	  if(k != "y"){
-	    f<-paste0(f,"+", k ,"")
-	  }
-	}
+	f <-"y~"
+	f<-paste0(f,fixed)
 
 	#Add random effects' names to the formula. With the previous modification it is not necessary to use the dataframe name in
 	#the formula
