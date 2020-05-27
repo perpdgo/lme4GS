@@ -8,12 +8,14 @@
 
 
 \usage{
-  theta_optim<-function(y,X)
+  theta_optim<-function(y,X,D=NULL,b=NULL)
 }
 
 \arguments{
    \item{y}{(numeric, \eqn{n}{n}) the data-vector (NAs not allowed).}
    \item{X}{A matrix, \eqn{n}{n} \eqn{p}{p} that specifies the markers.}
+   \item{D}{an optional matrix containing the distance.}
+   \item{b}{an optional grid values of the parameter bandwidth.}
 }
 
 \value{A list that contains
