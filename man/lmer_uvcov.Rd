@@ -1,5 +1,5 @@
-\name{lmer_uvcov}
-\alias{lmer_uvcov}
+\name{lmerUvcov}
+\alias{lmerUvcov}
 \title{Fits a linear mixed model with user specified variance covariance-matrices.}
 
 \description{
@@ -8,13 +8,15 @@
 
 
 \usage{
-  lmer_uvcov(y,fixed="1",random,verbose=5L)
+  lmerUvcov(formula, data = NULL, Uvcov = NULL,verbose=5L)
 }
 
 \arguments{
-   \item{y}{(numeric, \eqn{n}{n}) the data-vector (NAs not allowed).}
-   \item{fixed}{A formula that specifies fixed effects.}
-   \item{random}{(list) This is a two-level list used to specify the variance covariance matrixes for random effects.}
+   \item{formula}{a two-sided linear formula object describing both the fixed-effects and random-effects part of the model, with the
+                  response on the left of a `~' operator and the terms, separated by `+' operators, on the right.  Random-effects
+                  terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.}
+   \item{data}{an optional data frame containing the variables named in `formula'.} 
+   \item{Uvcov}{list.}
    \item{verbose}{verbose output from optimizeLmer function?.}	
 }
 
@@ -35,7 +37,7 @@ fixed effects,  \ifelse{html}{\out{&beta;}}{\eqn{\boldsymbol\beta}{beta}} is the
 
 The linear mixed model can be re-written as:
 
-\ifelse{html}{\out{y=y=X&beta; + Z<sub>1</sub><sup>&ast;</sup> u<sub>1</sub><sup>&ast;</sup>+...+Z<sub>q</sub><sup>&ast;</sup> u<sub>q</sub><sup>&ast;</sup>+e,}}{\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1^* \boldsymbol u_1^* + \dots + \boldsymbol Z_q^* \boldsymbol u_q^* + \boldsymbol e,}{y= Xbeta + Z[1]^* u[1]^* + ... + Z[q]^* u[q]^* +e,}}
+\ifelse{html}{\out{y=X&beta; + Z<sub>1</sub><sup>&ast;</sup> u<sub>1</sub><sup>&ast;</sup>+...+Z<sub>q</sub><sup>&ast;</sup> u<sub>q</sub><sup>&ast;</sup>+e,}}{\deqn{\boldsymbol y= \boldsymbol X \boldsymbol \beta+ \boldsymbol Z_1^* \boldsymbol u_1^* + \dots + \boldsymbol Z_q^* \boldsymbol u_q^* + \boldsymbol e,}{y= Xbeta + Z[1]^* u[1]^* + ... + Z[q]^* u[q]^* +e,}}
 
 where \ifelse{html}{\out{Z<sub>j</sub><sup>&ast;</sup>=Z<sub>j</sub> L<sub>j</sub>}}{\eqn{\boldsymbol Z_j^*= \boldsymbol Z_j \times \boldsymbol L_j}{Z[j]^* = Z[j] L[j]}}, with \ifelse{html}{\out{L<sub>j</sub>}}{\eqn{\boldsymbol L_j}{L[j]}} from Cholesky 
 factorization for \ifelse{html}{\out{K<sub>j</sub>}}{\eqn{\boldsymbol K_j}{K[j]}}. Alternatively,
@@ -62,53 +64,56 @@ Paulino Perez-Rodriguez
 \examples{
 
 \dontrun{
-  library(BGLR)
-  library(lme4GS)
 
-  #Example 1, wheat 
-  data(wheat)
-  X<-wheat.X
-  Z<-scale(X,center=TRUE,scale=TRUE)
-  G<-tcrossprod(Z)/ncol(Z)
-  A<-wheat.A
-  rownames(G)<-colnames(G)<-rownames(A)
-  y<-wheat.Y[,1]
+library(BGLR)
+library(lme4GS)
 
-  #id a vector with ids
-  random<-list(mrk=list(K=G,id=rownames(G)),
-               ped=list(K=A,id=rownames(A)))
+########################################################################
+#Example 1, wheat 
+########################################################################
+data(wheat)
+X<-wheat.X
+Z<-scale(X,center=TRUE,scale=TRUE)
+G<-tcrossprod(Z)/ncol(Z)
+A<-wheat.A
+rownames(G)<-colnames(G)<-rownames(A)
+y<-wheat.Y[,1]
 
-  out<-lmer_uvcov(y,fixed="1",random=random)
+data<-data.frame(y=y,m_id=rownames(G),a_id=rownames(A))
 
-  summary(out)
+fm1<-lmerUvcov(y~(1|m_id)+(1|a_id),data=data,
+               Uvcov=list(m_id=list(K=G),a_id=list(K=A)))
 
-  plot(y,predict(out))
+summary(fm1)
 
-  #Example 2, mice
+#Predictions
+plot(y,predict(fm1))
 
-  data(mice)
+#Random effects
+ranef(fm1)
 
-  y<-mice.pheno$Obesity.BMI
-  y<-scale(y,center=TRUE,scale=TRUE)
-  y<-as.vector(y)
+########################################################################
+#Example 2, mice 
+########################################################################
 
-  X<-mice.X
-  Z<-scale(X,center=TRUE,scale=TRUE)
-  G<-tcrossprod(Z)/ncol(Z)
+data(mice)
 
-  gender<-mice.pheno$GENDER
-  litter<-mice.pheno$Litter
-  cage<-mice.pheno$cage
+X<-mice.X
+Z<-scale(X,center=TRUE,scale=TRUE)
+G<-tcrossprod(Z)/ncol(Z)
 
-  fixed<-"1+gender+litter"
+mice.pheno$m_id<-rownames(G)
+mice.pheno$Obesity.BMI<-scale(mice.pheno$Obesity.BMI)
 
-  #K=NULL means that we are using the identity matrix
-  random<-list(cage=list(K=NULL,id=cage),
-	           mrk=list(K=G,id=rownames(G)))
 
-  out<-lmer_uvcov(y,fixed=fixed,random=random)
+fm2<-lmerUvcov(Obesity.BMI~GENDER+Litter+(1|cage)+(1|m_id),
+               data=mice.pheno,Uvcov=list(m_id=list(K=G)))
+summary(fm2)
 
-  plot(y,predict(out))
+plot(mice.pheno$Obesity.BMI,predict(fm2))
+
+ranef(fm2)
+
 }
 
 }
