@@ -19,7 +19,7 @@
                   terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.}
    \item{data}{an optional data frame containing the variables named in `formula'.}
    \item{Uvcov}{a list to specify the variance-covariance matrix for random effects.}
-   \item{kernel}{a list to specify the distance matrix of markers (D), the kernel type, an optional grid values of the parameter bandwidth and the ids for the markers.}
+   \item{kernel}{a list to specify the distance matrix of markers, the kernel type, an optional grid values of the parameter bandwidth and the ids for the markers.}
 }
 
 \value{A list that contains
