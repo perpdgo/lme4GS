@@ -60,12 +60,8 @@ install_git('https://github.com/perpdgo/lme4GS')
 #Example 2, mice
 
 data(mice)
-
-y<-mice.pheno$Obesity.BMI
-y<-scale(y,center=TRUE,scale=TRUE)
-y<-as.vector(y)
-
 X<-mice.X
+A<-mice.A
 Z<-scale(X,center=TRUE,scale=TRUE)
 G<-tcrossprod(Z)/ncol(Z)
 
@@ -77,8 +73,6 @@ out<-lmerUvcov(Obesity.BMI~GENDER+Litter+(1|cage)+(1|m_id)+(1|a_id),data=mice.ph
 summary(out)
 
 plot(predict(out),mice.pheno$Obesity.BMI)
-
-plot(y,predict(out))
 
 ```
 #### 3. Cross-validation 
