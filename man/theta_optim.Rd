@@ -8,14 +8,18 @@
 
 
 \usage{
-  theta_optim<-function(y,X,D=NULL,b=NULL)
+ theta.optim <- function(formula, data = NULL, Uvcov = NULL, 
+                     kernel = list(D = NULL, kernel_type = "gaussian", 
+                     theta_seq = NULL, MRK = NULL))
 }
 
 \arguments{
-   \item{y}{(numeric, \eqn{n}{n}) the data-vector (NAs not allowed).}
-   \item{X}{A matrix, \eqn{n}{n} \eqn{p}{p} that specifies the markers.}
-   \item{D}{an optional matrix containing the distance.}
-   \item{b}{an optional grid values of the parameter bandwidth.}
+   \item{formula}{(a two-sided linear formula object describing both the fixed-effects and random-effects part of the model, with the
+                  response on the left of a `~' operator and the terms, separated by `+' operators, on the right.  Random-effects
+                  terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.}
+   \item{data}{an optional data frame containing the variables named in `formula'.}
+   \item{Uvcov}{a list to specify the variance-covariance matrix for random effects.}
+   \item{kernel}{a list to specify the distance matrix of markers (D), the kernel type, an optional grid values of the parameter bandwidth and the ids for the markers.}
 }
 
 \value{A list that contains
@@ -46,7 +50,12 @@ y <- wheat.Y[,1]
 
 rownames(X) <- rownames(A)
 
-out_res <- theta_optim(y,X)
+data=data.frame(y=y,m_id=rownames(X))
+
+res<-theta.optim(y~(1|m_id),data=data,
+                 kernel = list(D = NULL, kernel_type = "gaussian", 
+                               theta.seq = NULL, MRK = X))
+
 }
 
 }
