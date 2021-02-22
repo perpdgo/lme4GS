@@ -103,3 +103,4 @@ theta.optim <- function(formula, data = NULL, Uvcov = NULL,
   return(list(LL=LL, LL.max=LL[max.LL],theta=theta,
               theta.max=theta.max,out=sol.max, K=K.opt))
 }
+
