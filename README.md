@@ -21,7 +21,7 @@ library(devtools)
 #Here the user can be "perpdgo" or "gldc"
 #install_git('https://github.com/perpdgo/lme4GS',credentials=git2r::cred_user_pass("perpdgo",getPass::getPass()))
 
-install_git('https://github.com/perpdgo/lme4GS')
+install_git('https://github.com/perpdgo/lme4GS.git')
 
 ```
 
