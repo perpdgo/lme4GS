@@ -1,10 +1,10 @@
-import("lme4")
-import("Matrix")
-importFrom("methods", "as", "new")
-importFrom("stats", "dist")
+export(lmerUvcov)
+export(ranefUvcovNew)
+export(theta_optim)
+exportClasses(lmerUvcov)
+exportMethods(ranef)
 
-export("lmerUvcov","ranefUvcovNew","theta_optim")
-
-exportClasses("lmerUvcov")
-
-exportMethods("ranef")
+import(lme4)
+import(Matrix)
+importFrom("methods","as","new")
+importFrom("stats","dist")
