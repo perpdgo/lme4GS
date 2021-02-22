@@ -41,11 +41,13 @@ install_git('https://github.com/perpdgo/lme4GS')
  G<-tcrossprod(Z)/ncol(Z)
  A<-wheat.A
  rownames(G)<-colnames(G)<-rownames(A)
- y<-as.vector(wheat.Y)
+ y<-wheat.Y[,1]
 
- data=data.frame(y=y,m_id=rep(rownames(G),4),a_id=rep(rownames(A),4))
+ #id a vector with ids
+ random<-list(mrk=list(K=G,id=rownames(G)),
+              ped=list(K=A,id=rownames(A)))
 
- out<-lmerUvcov(y~(1|m_id)+(1|a_id),data=data,Uvcov=list(m_id=list(K=G),a_id=list(K=A)))
+ out<-lmer_uvcov(y,fixed="1",random=random)
 
  summary(out)
 
@@ -69,14 +71,17 @@ X<-mice.X
 Z<-scale(X,center=TRUE,scale=TRUE)
 G<-tcrossprod(Z)/ncol(Z)
 
-mice.pheno$a_id<-rownames(A)
-mice.pheno$m_id<-rownames(G)
+gender<-mice.pheno$GENDER
+litter<-mice.pheno$Litter
+cage<-mice.pheno$cage
 
-out<-lmerUvcov(Obesity.BMI~GENDER+Litter+(1|cage)+(1|m_id)+(1|a_id),data=mice.pheno,
-               Uvcov=list(a_id=list(K=A),m_id=list(K=G)))
-summary(out)
+fixed<-"1+gender+litter"
 
-plot(predict(out),mice.pheno$Obesity.BMI)
+#K=NULL means that we are using the identity matrix
+random<-list(cage=list(K=NULL,id=cage),
+	     mrk=list(K=G,id=rownames(G)))
+
+out<-lmer_uvcov(y,fixed=fixed,random=random)
 
 plot(y,predict(out))
 
@@ -106,30 +111,23 @@ plot(y,predict(out))
   y_trn<-y[wheat.sets!=fold]
   y_tst<-y[wheat.sets==fold]
 
-  A_trn=A[wheat.sets!=fold,wheat.sets!=fold]
-  G_trn=G[wheat.sets!=fold,wheat.sets!=fold]
-
-  pheno_trn=data.frame(y_trn=y_trn,m_id=rownames(A_trn),a_id=rownames(G_trn))
-
   #######################################################################################
   #Marker based prediction
   #######################################################################################
+
+  random<-list(mrk=list(K=G,id=names(y_trn)))
 	
-  fm1<-lmerUvcov(y_trn~1+(1|m_id),data=pheno_trn,Uvcov=list(m_id=list(K=G_trn)))
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-  plot(pheno_trn$y_trn,predict(fm1),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-  #BLUP for individuals in the testing set
-  blup_tst<-ranefUvcovNew(fm1,Uvcov=list(m_id=list(K=G)))
-  blup_tst<-blup_tst$m_id[,1]
+  #Random effect list for prediction
+  newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]))
 
-  #Comparison
-  #Check the names
-  names(y_tst)<-rownames(G)[wheat.sets==fold]
-  blup_tst<-blup_tst[match(names(y_tst),names(blup_tst))]
-
-  yHat_tst<-fixef(fm1)[1]+blup_tst
-  points(y_tst,yHat_tst,col="red",pch=19)
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$mrk
+  yHat_tst<-fixef(out)[1]+blup_tst
+  points(y_tst,blup_tst,col="red",pch=19)
 
   #Correlation in testing set
   cor(y_tst,yHat_tst)
@@ -138,48 +136,43 @@ plot(y,predict(out))
   #Pedigree based prediction
   #######################################################################################
 
-  fm2<-lmerUvcov(y_trn~1+(1|a_id),data=pheno_trn,Uvcov=list(a_id=list(K=A_trn)))
+  random<-list(ped=list(K=A,id=names(y_trn)))
+	
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-  plot(pheno_trn$y_trn,predict(fm2),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-  #BLUP for individuals in the testing set
-  blup_tst<-ranefUvcovNew(fm2,Uvcov=list(a_id=list(K=A)))
-  blup_tst<-blup_tst$a_id[,1]
+  #Random effect list for prediction
+  newrandom<-list(ped=list(K=A,id=names(y)[wheat.sets==fold]))
 
-  #Comparison
-  #Check the names
-  names(y_tst)<-rownames(A)[wheat.sets==fold]
-  blup_tst<-blup_tst[match(names(y_tst),names(blup_tst))]
-
-  yHat_tst<-fixef(fm2)[1]+blup_tst
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$ped
+  yHat_tst<-fixef(out)[1]+blup_tst
   points(y_tst,yHat_tst,col="red",pch=19)
 
   #Correlation in testing set
   cor(y_tst,yHat_tst)
 
+
   #######################################################################################
   #Markers + Pedigree based prediction
   #######################################################################################
-  
-  fm3<-lmerUvcov(y_trn~1+(1|m_id)+(1|a_id),data=pheno_trn,
-               Uvcov=list(m_id=list(K=G_trn),a_id=list(K=A_trn)))
+ 
+  random<-list(mrk=list(K=G,id=names(y_trn)),
+               ped=list(K=A,id=names(y_trn)))
+	
+  out<-lmer_uvcov(y_trn,fixed="1",random=random)
 
-  plot(pheno_trn$y_trn,predict(fm3),xlab="Phenotype",ylab="Pred. Gen. Value")
+  plot(y_trn,predict(out),xlab="Phenotype",ylab="Pred. Gen. Value")
 
-  #BLUP for individuals in the testing set
-  blup_tst<-ranefUvcovNew(fm3,Uvcov=list(m_id=list(K=G),a_id=list(K=A)))
+  #Random effect list for prediction
+  newrandom<-list(mrk=list(K=G,id=names(y)[wheat.sets==fold]),
+                  ped=list(K=A,id=names(y)[wheat.sets==fold]))
 
-  blup_tst_m<-blup_tst$m_id[,1]
-  blup_tst_a<-blup_tst$a_id[,1]
-
-  #Comparison
-  #Check the names
-  names(y_tst)<-rownames(A)[wheat.sets==fold]
-  blup_tst_m<-blup_tst_m[match(names(y_tst),names(blup_tst_m))]
-  blup_tst_a<-blup_tst_a[match(names(y_tst),names(blup_tst_a))]
-
-  yHat_tst<-fixef(fm3)[1] + blup_tst_m + blup_tst_a
-  points(y_tst,yHat_tst,col="red",pch=19)
+  blup_tst<-predict_uvcov(out,newrandom)
+  blup_tst<-blup_tst$mrk+blup_tst$ped
+  yHat_tst<-fixef(out)[1]+blup_tst
+  points(y_tst,blup_tst,col="red",pch=19)
 
   #Correlation in testing set
   cor(y_tst,yHat_tst)
