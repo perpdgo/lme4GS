@@ -70,7 +70,7 @@ theta_optim <- function(formula, data = NULL, Uvcov = NULL,
       sol[[i]] <- lmerUvcov(formula = formulanew, data = datanew, 
                             Uvcov = uvcovkk)
     }  
-  } else if (m_i$kernel_type=="exponential"){
+  } else if (kernel$kernel_type=="exponential"){
     for (i in 1:nt){
       cat("i=",i,"\n")
       KE <- exp(-theta[i]*D)
