@@ -65,7 +65,7 @@ theta_optim <- function(formula, data = NULL, Uvcov = NULL,
     for (i in 1:nt){
       cat("i=",i,"\n")
       KG <- exp(-theta[i]*(D^2))
-      uvcovk <- list(m_id = list(K = KG))
+      uvcovk <- list(k_id = list(K = KG))
       uvcovkk <- c(Uvcov, uvcovk)
       sol[[i]] <- lmerUvcov(formula = formulanew, data = datanew, 
                             Uvcov = uvcovkk)
@@ -74,7 +74,7 @@ theta_optim <- function(formula, data = NULL, Uvcov = NULL,
     for (i in 1:nt){
       cat("i=",i,"\n")
       KE <- exp(-theta[i]*D)
-      uvcovk <- list(m_id = list(K = KE))
+      uvcovk <- list(k_id = list(K = KE))
       uvcovkk <- c(Uvcov, uvcovk)
       sol[[i]] <- lmerUvcov(formula = formulanew, data = datanew, 
                             Uvcov = uvcovkk)
