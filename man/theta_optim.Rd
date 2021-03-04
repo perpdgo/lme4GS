@@ -16,10 +16,13 @@
 \arguments{
    \item{formula}{(a two-sided linear formula object describing both the fixed-effects and random-effects part of the model, with the
                   response on the left of a `~' operator and the terms, separated by `+' operators, on the right.  Random-effects
-                  terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.}
+                  terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.
+                  The random-effect term associated with the markers with gaussian kernel and exponential kernel like variance-covariance 
+                  matrix must be named as `k_id' in the formula and the data.}
    \item{data}{an optional data frame containing the variables named in `formula'.}
    \item{Uvcov}{a list to specify the variance-covariance matrix for random effects.}
-   \item{kernel}{a list to specify the distance matrix of markers (D), the kernel type, an optional grid values of the parameter bandwidth and the ids for the markers.}
+   \item{kernel}{a list to specify the distance matrix of markers (D) this can be calculated or provided by the user, the kernel type can be gaussian or exponential, 
+                 an optional grid values of the parameter bandwidth and the markers matrix.}
 }
 
 \value{A list that contains
@@ -27,7 +30,7 @@
    \item{theta.max}{The optimal value of theta that maximizes the log-likelihood.}
    \item{LL}{A vector that specifies the values of the likelihood with its corresponding values of theta.}
    \item{max.LL}{The maximum value of the log-likelihood.}
-   \item{K}{Tha Gassuian Kernel compute with the optimal value of theta.}  
+   \item{K}{Tha Kernel compute with the optimal value of theta.}  
 }
 
 
