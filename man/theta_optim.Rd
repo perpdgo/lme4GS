@@ -3,12 +3,12 @@
 \title{Selection of bandwidth parameter of Gaussian kernel.}
 
 \description{
-  Obtain the optimal value of the bandwidth parameter for the Gaussian kernel by cross-validation.
+  Obtain the optimal value of the bandwidth parameter for the Gaussian and Exponential kernel by cross-validation.
 }
 
 
 \usage{
- theta.optim <- function(formula, data = NULL, Uvcov = NULL, 
+ theta_optim <- function(formula, data = NULL, Uvcov = NULL, 
                      kernel = list(D = NULL, kernel_type = "gaussian", 
                      theta_seq = NULL, MRK = NULL))
 }
