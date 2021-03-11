@@ -16,7 +16,7 @@
                   response on the left of a `~' operator and the terms, separated by `+' operators, on the right.  Random-effects
                   terms are distinguished by vertical bars (`|') separating expressions for design matrices from grouping factors.}
    \item{data}{an optional data frame containing the variables named in `formula'.} 
-   \item{Uvcov}{list.}
+   \item{Uvcov}{list used to specify the variance covariance matrixes for random effects.}
    \item{verbose}{verbose output from optimizeLmer function?.}	
 }
 
