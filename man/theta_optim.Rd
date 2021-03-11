@@ -30,6 +30,7 @@
    \item{theta.max}{The optimal value of theta that maximizes the log-likelihood.}
    \item{LL}{A vector that specifies the values of the likelihood with its corresponding values of theta.}
    \item{max.LL}{The maximum value of the log-likelihood.}
+   \item{out}{The solution with the optimal value of theta.}
    \item{K}{The Kernel obtained with the optimal value of theta.}  
 }
 
