@@ -30,7 +30,7 @@
    \item{theta.max}{The optimal value of theta that maximizes the log-likelihood.}
    \item{LL}{A vector that specifies the values of the likelihood with its corresponding values of theta.}
    \item{max.LL}{The maximum value of the log-likelihood.}
-   \item{K}{Tha Kernel compute with the optimal value of theta.}  
+   \item{K}{The Kernel obtained with the optimal value of theta.}  
 }
 
 
@@ -53,9 +53,9 @@ y <- wheat.Y[,1]
 
 rownames(X) <- rownames(A)
 
-data=data.frame(y=y,m_id=rownames(X))
+data=data.frame(y=y,k_id=rownames(X))
 
-res<-theta.optim(y~(1|m_id),data=data,
+res<-theta.optim(y~(1|k_id),data=data,
                  kernel = list(D = NULL, kernel_type = "gaussian", 
                                theta.seq = NULL, MRK = X))
 
