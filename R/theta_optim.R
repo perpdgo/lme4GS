@@ -1,64 +1,104 @@
-#Function that selects the bandwidth parameter of a Gaussian kernel
-#K(i,j)=exp(-\theta (d_ij)^2))
 
-theta_optim<-function(y, X, D = NULL, b = NULL)
+theta_optim <- function(formula, data = NULL, Uvcov = NULL, 
+                        kernel = list(D = NULL, kernel_type = "gaussian", 
+                                      theta_seq = NULL, MRK = NULL))
 {
-  #y: response vector (n x 1)
-  #X: matrix of markers (n x p)
-  #D: distance matrix (p x p)
-  #b: grid
+  #Step1: check the m_id list 
+  if(is.null(kernel)) stop("'kernel' can not be NULL\n")
+  if(!is.list(kernel)) stop("'kernel' must be a list\n")
+  if(length(kernel)<1) stop("'kernel' is an empty list\n")
   
-  #check inputs
-  if (is.null(rownames(X))) stop("X must have rownames\n")
-  if (!is.character(rownames(X))) (rownames(X)<-as.character(rownames(X)))
+  #check the components of m_id
+  #check the distance matrix
+  if (!is.null(kernel$D)){
+    if (!is.matrix(kernel$D)){
+      stop("'D' must be a matrix\n")
+    }
+  }
   
-  #Step 1:
-  n <- nrow(X) #number of individuals
-  p <- ncol(X) #number of markers
-  
- #check the distance matrix
-  if (is.null(D)) {
-    #standardize the matrix of markers
-    Z <- scale(X,center=TRUE,scale=TRUE) 
-    #euclidian distance matrix
+  #compute the distance matrix if D is NULL
+  else{
+    X <- kernel$MRK
+    
+    if(is.null(X)){
+      stop("The marker matrix 'MRK' can not be NULL\n")
+    }
+    
+    if(!is.matrix(X)){
+      stop("The marker matrix 'MRK' must be a matrix\n")
+    }
+    
+    n <- nrow(X)
+    p <- ncol(X)
+    Z <- scale(X, center = TRUE, scale = TRUE)
     D <- as.matrix(dist(Z, method = "euclidian"))/sqrt(p)
   }
   
-  #grid of valures of theta
-  if (is.null(b)){
-    #vector of values of theta
-    b <- setdiff(seq(0, max(D), length.out = 11),0)
-  }
   
-  #Step 2:
+  #check the grid for theta and compute if the grid is NULL
+  if(is.null(kernel$theta_seq)){
+    rho <- seq(0.15,0.90,length.out=20)
+    theta<-(-log(rho))
+    theta<-sort(theta) 
+  } else
+    theta <- kernel$theta_seq
+  
+  #Step2: compute the gaussian kernel for each value of theta
+  
   sol <- list()
   out <- list()
-  nt  <- length(b)
+  nt <- length(theta)
+  formulanew <- formula  
+  datanew <- data
   
-  #fit the model for each theta value
-  for (i in 1:nt)
-  {
-    cat("i=",i,"\n")
-    KG <- exp(-b[i]*(D^2))
-    rownames(KG)<-colnames(KG)<-rownames(X)
-    data<-data.frame(y=y,id=rownames(X))	
-    sol[[i]] <- lmerUvcov(y~1+(1|id),data=data,Uvcov=list(id=KG))
+  #fit the model for each value of theta
+  #check the type of kernel
+  
+  if (kernel$kernel_type=="gaussian"){
+    for (i in 1:nt){
+      cat("Case ",i,"/",length(theta),"\n")
+      cat("theta=",theta[i],"\n")
+      KG <- exp(-theta[i]*D^2)
+      uvcovk <- list(k_id = list(K = KG))
+      uvcovkk <- c(Uvcov, uvcovk)
+      sol[[i]] <- lmerUvcov(formula = formulanew, data = datanew, 
+                            Uvcov = uvcovkk)
+    }  
+  } else if (kernel$kernel_type=="exponential"){
+    for (i in 1:nt){
+      cat("Case ",i,"/",length(theta),"\n")
+      cat("theta=",theta[i],"\n")
+      KE <- exp(-theta[i]*D)
+      uvcovk <- list(k_id = list(K = KE))
+      uvcovkk <- c(Uvcov, uvcovk)
+      sol[[i]] <- lmerUvcov(formula = formulanew, data = datanew, 
+                            Uvcov = uvcovkk)
+    }  
+  } else {
+    stop("The type of kernel must be 'gaussian' or 'exponential'\n")
   }
   
-  #Step 3:
-  LL <- rep(0, nt)
+  #step3: get the value of theta that maximizes the log-likelihood
+  LL <- rep(0,nt)
   
-  for (i in 1:nt)
-  {
-    out[[i]] <- summary(sol[[i]])  
+  for (i in 1:nt){
+    out[[i]] <- summary(sol[[i]])
     LL[i] <- out[[i]]$logLik
   }
   
   LL <- as.numeric(LL)
   max.LL <- which.max(LL)
-  theta.max <- b[max.LL]
-  K <- exp(-b[max.LL]*(D^2))
+  theta.max <- theta[max.LL]
+  sol.max <- sol[[max.LL]] #Fitted model for optimal value of the bandwidth 
   
-  return(list(LL=LL, max.LL=LL[max.LL], theta=b, 
-              theta.max=theta.max, K=K))
+  if(kernel$kernel_type=="gaussian")
+  {
+  		K.opt <- exp(-theta.max*(D^2)) 
+  }else if (kernel$kernel_type=="exponential"){
+  		K.opt<- exp(-theta[i]*D)
+  }
+   
+  #Return the goodies
+  return(list(LL=LL, LL.max=LL[max.LL],theta=theta,
+              theta.max=theta.max,fm=sol.max,K=K.opt))
 }
