@@ -3,12 +3,12 @@ theta_optim <- function(formula, data = NULL, Uvcov = NULL,
                         kernel = list(D = NULL, kernel_type = "gaussian", 
                                       theta_seq = NULL, MRK = NULL))
 {
-  #Step1: check the m_id list 
+  #Step1: check the k_id list 
   if(is.null(kernel)) stop("'kernel' can not be NULL\n")
   if(!is.list(kernel)) stop("'kernel' must be a list\n")
   if(length(kernel)<1) stop("'kernel' is an empty list\n")
   
-  #check the components of m_id
+  #check the components of k_id
   #check the distance matrix
   if (!is.null(kernel$D)){
     if (!is.matrix(kernel$D)){
@@ -30,8 +30,7 @@ theta_optim <- function(formula, data = NULL, Uvcov = NULL,
     
     n <- nrow(X)
     p <- ncol(X)
-    Z <- scale(X, center = TRUE, scale = TRUE)
-    D <- as.matrix(dist(Z, method = "euclidian"))/sqrt(p)
+    D <- as.matrix(dist(X, method = "euclidian"))/sqrt(p)
   }
   
   
