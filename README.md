@@ -8,11 +8,11 @@ Fits several models used routinely in Genomic Selection.
 #Install remotes package
 install.packages("remotes")
 
-#Load the remotes  package wich includes the isntall_git function
+#Load the remotes  package wich includes the install_git function
 library(remotes)
 
 #Install lme4GS from github, it will install requiered packages
-install_git('https://github.com/perpdgo/lme4GS')
+install_git("https://github.com/perpdgo/lme4GS")
 
 ```
 
