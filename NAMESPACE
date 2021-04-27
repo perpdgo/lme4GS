@@ -1,5 +1,6 @@
 export(lmerUvcov)
 export(ranefUvcovNew)
+export(ranefUvcov)
 export(theta_optim)
 exportClasses(lmerUvcov)
 exportMethods(ranef)
