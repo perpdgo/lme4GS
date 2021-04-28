@@ -46,9 +46,9 @@ After that:
 3) Select the file "lme4GS_0.1.zip" or "lme4GS_0.1.tgz", depending on your operating system.
 4) Click in the "Install" button.
 
+<img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_macOS.png" width="500">
 
-<img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_macOS.png" width="400">
-
+<img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_win.png" width="500">
 
 #### 2. Fitting several models
 
