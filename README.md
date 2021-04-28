@@ -53,7 +53,7 @@ Figure 1. Install packages diaglog in macOS.
 
 Figure 2. Install packages dialog in Windows.
 
-NOTE: We tested the commands and installation process using the last stable version of R (4.0.5).
+NOTE: We tested the commands and installation process using the last stable version of R (4.0.5) in macOS and Windows.
 
 #### 2. Fitting several models
 
