@@ -48,11 +48,11 @@ After that:
 
 <img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_macOS.png" width="500">
 
-Install package diaglog in macOS.
+Figure 1. Install packages diaglog in macOS.
 
 <img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_win.png" width="500">
 
-Install package dialog in Windows.
+Figure 2. Install packages dialog in Windows.
 
 #### 2. Fitting several models
 
