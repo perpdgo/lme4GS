@@ -12,7 +12,8 @@ install.packages("remotes")
 library(remotes)
 
 #Install lme4GS from github, it will install requiered packages
-install_git("https://github.com/perpdgo/lme4GS")
+#install_git("https://github.com/perpdgo/lme4GS")
+install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GS')
 
 ```
 
