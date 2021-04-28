@@ -7,7 +7,8 @@ Fits several models used routinely in Genomic Selection.
 ##### Option 1. Installing from source.
 
 You need to install first some extra tools, [Xcode](https://developer.apple.com/xcode/downloads/) for Mac users, 
-and [Rtools](https://cran.r-project.org/bin/windows/Rtools/) for Windows users.
+and [Rtools](https://cran.r-project.org/bin/windows/Rtools/) for Windows users. After that, open R and type the 
+following commands to install the package:
 
 ```R
 
@@ -25,6 +26,26 @@ library(devtools)
 install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GS')
 
 ```
+
+##### Option 2. Installing from binary file.
+
+Downlod the file lme4GS_0.1.zip in case you are using windows or lme4GS_0.1.tgz if you use macOS.
+The open Rstudio and execute the following commands:
+
+```R
+
+#Install lme4 package
+install.packages("lme4")
+
+```
+
+After that
+
+1) Go to the Tools menu -> Install.packages
+2) Select "Package archive" in "the Install from" menu.
+3) Select the file "lme4GS_0.1.zip" or "lme4GS_0.1.tgz", depending on your operating system.
+4) Click in the "Install" button.
+
 
 #### 2. Fitting several models
 
