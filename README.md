@@ -29,8 +29,8 @@ install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GS')
 
 ##### Option 2. Installing from binary file.
 
-Downlod the file lme4GS_0.1.zip in case you are using windows or lme4GS_0.1.tgz if you use macOS.
-The open Rstudio and execute the following commands:
+Downlod the file "lme4GS_0.1.zip" in case you are using windows or "lme4GS_0.1.tgz" if you use macOS from 
+the pkg_bin directory in this repository. Then, open Rstudio and execute the following commands:
 
 ```R
 
