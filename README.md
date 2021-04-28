@@ -4,15 +4,21 @@ Fits several models used routinely in Genomic Selection.
 
 #### 1. Installation 
 
+## Option 1. Installing from source
+
 ```R
-#Install remotes package
-install.packages("remotes")
 
-#Load the remotes  package wich includes the install_git function
-library(remotes)
+#Install lme4 package
+install.packages("lme4")
 
-#Install lme4GS from github, it will install requiered packages
-#install_git("https://github.com/perpdgo/lme4GS")
+#Install devtools package
+install.packages("devtools")
+
+
+#Load the devtools  package wich includes the install_git function
+library(devtools)
+
+#Install lme4GS from github
 install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GS')
 
 ```
