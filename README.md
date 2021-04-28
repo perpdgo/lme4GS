@@ -4,7 +4,7 @@ Fits several models used routinely in Genomic Selection.
 
 #### 1. Installation 
 
-## Option 1. Installing from source
+##### Option 1. Installing from source
 
 ```R
 
