@@ -39,9 +39,9 @@ install.packages("lme4")
 
 ```
 
-After that
+After that:
 
-1) Go to the Tools menu -> Install.packages
+1) Go to the Tools menu -> Install.packages.
 2) Select "Package archive" in "the Install from" menu.
 3) Select the file "lme4GS_0.1.zip" or "lme4GS_0.1.tgz", depending on your operating system.
 4) Click in the "Install" button.
