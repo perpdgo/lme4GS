@@ -18,7 +18,6 @@ install.packages("lme4")
 #Install devtools package
 install.packages("devtools")
 
-
 #Load the devtools  package wich includes the install_git function
 library(devtools)
 
