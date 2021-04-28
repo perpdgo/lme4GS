@@ -47,6 +47,9 @@ After that:
 4) Click in the "Install" button.
 
 
+<img src="https://github.com/perpdgo/JRStat/blob/master/GraphsModule.png" width="800">
+
+
 #### 2. Fitting several models
 
 **Prediction based on markers and pedigree for wheat**
