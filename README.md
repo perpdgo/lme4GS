@@ -47,7 +47,7 @@ After that:
 
 <img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_macOS.png" width="500">
 
-Figure 1. Install packages diaglog in macOS.
+Figure 1. Install packages dialog in macOS.
 
 <img src="https://github.com/perpdgo/lme4GS/blob/master/screenshoots/install_win.png" width="500">
 
