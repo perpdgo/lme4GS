@@ -210,7 +210,7 @@ plot(predict(out),mice.pheno$Obesity.BMI)
 
 ```
 
-## lme4GS: lme4 for Genomic Selection (experimental support for GLMM)
+## lme4GS: lme4 for Genomic Selection with experimental support for GLMM
 
 Fits several models used routinely in Genomic Selection when the response can be modeled using 
 the simple exponential family, which leads to the Generalized Linear Mixed Models
@@ -236,4 +236,5 @@ library(devtools)
 install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GSv2')
 
 ```
+
 
