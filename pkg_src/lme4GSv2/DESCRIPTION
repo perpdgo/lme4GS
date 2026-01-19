@@ -1,0 +1,40 @@
+Package: lme4GSv2
+Type: Package
+Title: 'lme4' for Genomic Selection
+Version: 0.1
+Date: 2025-03-27
+Authors@R: c(person(given = "Diana Yanira",
+		      family = "Caamal Pat",
+		      role = "aut",
+		      email = "diana.caamal@colpos.mx"),
+	     person(given = "Paulino",
+		      family = "Perez Rodriguez",
+		      role = c("aut", "cre"),
+		      email = "perpdgo@colpos.mx"),
+	     person(given = "Erick Javier",
+		      family = "Suarez Sanchez",
+		      role = "ctb",
+		      email = "suarez.erick@colpos.mx"))
+Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
+Depends: R (>= 3.6.3), lme4, methods, Matrix
+Imports: BGLR
+Description: Flexible functions that use 'lme4' as computational engine for 
+             fitting the models.Genomic selection (GS) is a technology used for genetic 
+             improvement, and it has many advantages over phenotype-based selection. There 
+             are several statistical models that adequately approach the statistical 
+             challenges in GS, such as in linear mixed models (LMMs). The 'lme4' is the 
+             standard package for fitting linear and generalized LMMs in the R-package, 
+             but its use for genetic analysis is limited because it does not allow the 
+             correlation between individuals or groups of individuals to be defined. The 
+             'lme4GS' package is focused on fitting LMMs with covariance structures defined 
+             by the user, bandwidth selection, and genomic prediction. The new package is 
+             focused on genomic prediction of the models used in GS and can fit LMMs using
+             different variance-covariance matrices. Several examples of GS models are 
+             presented using this package as well as the analysis using real data. For more
+             details see Caamal-Pat et.al. (2021) <doi:10.3389/fgene.2021.680569>.
+License: GPL (>= 2)
+NeedsCompilation: no
+Packaged: 2026-01-18 23:55:59 UTC; 6QW95LA_2004
+Author: Diana Yanira Caamal Pat [aut],
+  Paulino Perez Rodriguez [aut, cre],
+  Erick Javier Suarez Sanchez [ctb]
