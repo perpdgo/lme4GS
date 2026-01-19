@@ -209,3 +209,31 @@ plot(predict(out),mice.pheno$Obesity.BMI)
   cor(y_tst,yHat_tst)
 
 ```
+
+## lme4GS: lme4 for Genomic Selection (experimental support for GLMM)
+
+Fits several models used routinely in Genomic Selection when the response can be modeled using 
+the simple exponential family, which leads to the Generalized Linear Mixed Models
+
+#### 1. Installation 
+
+You need to install first some extra tools, [Xcode](https://developer.apple.com/xcode/downloads/) for Mac users, 
+and [Rtools](https://cran.r-project.org/bin/windows/Rtools/) for Windows users. After that, open R and type the 
+following commands to install the package:
+
+```R
+
+#Install lme4 package
+install.packages("lme4")
+
+#Install devtools package
+install.packages("devtools")
+
+#Load the devtools  package wich includes the install_git function
+library(devtools)
+
+#Install lme4GS from github
+install_git('https://github.com/perpdgo/lme4GS/',subdir='pkg_src/lme4GSv2')
+
+```
+
