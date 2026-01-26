@@ -1,8 +1,8 @@
-Package: lme4GSv2
+Package: lme4GS
 Type: Package
 Title: 'lme4' for Genomic Selection
-Version: 0.1
-Date: 2025-03-27
+Version: 0.2
+Date: 2026-01-25
 Authors@R: c(person(given = "Diana Yanira",
 		      family = "Caamal Pat",
 		      role = "aut",
@@ -17,9 +17,9 @@ Authors@R: c(person(given = "Diana Yanira",
 		      email = "suarez.erick@colpos.mx"))
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
 Depends: R (>= 3.6.3), lme4, methods, Matrix
-Imports: BGLR
+Suggests: BGLR
 Description: Flexible functions that use 'lme4' as computational engine for 
-             fitting the models.Genomic selection (GS) is a technology used for genetic 
+             fitting models used in Genomic Selection (GS). GS is a technology used for genetic 
              improvement, and it has many advantages over phenotype-based selection. There 
              are several statistical models that adequately approach the statistical 
              challenges in GS, such as in linear mixed models (LMMs). The 'lme4' is the 
@@ -34,7 +34,3 @@ Description: Flexible functions that use 'lme4' as computational engine for
              details see Caamal-Pat et.al. (2021) <doi:10.3389/fgene.2021.680569>.
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2026-01-18 23:55:59 UTC; 6QW95LA_2004
-Author: Diana Yanira Caamal Pat [aut],
-  Paulino Perez Rodriguez [aut, cre],
-  Erick Javier Suarez Sanchez [ctb]
